@@ -25,7 +25,7 @@ public class CategoriaControlador {
         this.categoriaServico = categoriaServico;
     }
 
-    @Operation(summary = "Listar todas as categorias", description = "Retorna uma lista de todas as categorias cadastradas.")
+    @Operation(summary = "Listar todas as categorias", description = "Lista de todas as categorias cadastradas.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de categorias retornadas com sucesso")
     })
@@ -34,18 +34,19 @@ public class CategoriaControlador {
         return categoriaServico.listarTodas();
     }
 
-    @Operation(summary = "Buscar categoria por ID", description = "Retorna uma categoria pelo ID fornecido.")
+    @Operation(summary = "Buscar categoria por código", description = "Busca categoria pelo ID fornecido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de categorias retornadas com sucesso"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @GetMapping(value = "/{codigo}")
-    public ResponseEntity<Optional<Categoria>> buscarPorId(@PathVariable Long codigo) {
-        Optional<Categoria> categoria = categoriaServico.buscarPorCodigo(codigo);
-        return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+    public ResponseEntity<Categoria> buscarPorCodigo(@PathVariable Long codigo) {
+        return categoriaServico.buscarPorCodigo(codigo)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Salvar nova categoria", description = "Cria uma nova categoria")
+    @Operation(summary = "Criar", description = "Cria uma nova categoria")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
@@ -56,7 +57,7 @@ public class CategoriaControlador {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
-    @Operation(summary = "Atualizar categoria existente", description = "Atualiza os dados de uma categoria existente.")
+    @Operation(summary = "Atualizar", description = "Atualiza os dados de uma categoria existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
@@ -66,4 +67,17 @@ public class CategoriaControlador {
     public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
         return ResponseEntity.ok(categoriaServico.atualizar(codigo, categoria));
     }
+
+    @Operation(summary = "Excluir", description = "Excluir categoria por código.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Operação realizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Dados fornecidos inválidos"),
+    })
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long codigo) {
+        categoriaServico.excluir(codigo);
+    }
+
 }

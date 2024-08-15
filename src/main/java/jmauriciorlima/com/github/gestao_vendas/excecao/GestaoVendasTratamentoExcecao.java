@@ -37,6 +37,14 @@ public class GestaoVendasTratamentoExcecao extends ResponseEntityExceptionHandle
         String msgUsuario = "Recurso não encontrado.";
         String msgDesenvolvedor = ex.toString();
         List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(RegraNegocioException.class)
+    public ResponseEntity<Object> handleRegraNegocioException(RegraNegocioException ex, WebRequest request) {
+        String msgUsuario = ex.getMessage();
+        String msgDesenvolvedor = ex.getMessage();
+        List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
         return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -51,13 +59,16 @@ public class GestaoVendasTratamentoExcecao extends ResponseEntityExceptionHandle
     }
 
     private String tratarMensagemDeErroParaUsuario(FieldError fieldError) {
-        if (fieldError.getCode().equals(CONSTANT_VALIDATION_NOT_BLANK)) {
-            return fieldError.getDefaultMessage().concat(" é obrigatório.");
+        switch (fieldError.getCode()) {
+            case CONSTANT_VALIDATION_NOT_BLANK:
+                return fieldError.getDefaultMessage().concat(" é obrigatório.");
+            case CONSTANT_VALIDATION_LENGTH:
+                return fieldError.getDefaultMessage().concat(
+                        String.format(" deve ter entre %s e %s caracteres.",
+                                fieldError.getArguments()[2], fieldError.getArguments()[1]));
+            default:
+                return fieldError.toString();
         }
-        if (fieldError.getCode().equals(CONSTANT_VALIDATION_LENGTH)) {
-            return fieldError.getDefaultMessage().concat(String.format(" deve ter entre %s e %s caracteres.",
-                    fieldError.getArguments()[2], fieldError.getArguments()[1]));
-        }
-        return fieldError.toString();
     }
+
 }
