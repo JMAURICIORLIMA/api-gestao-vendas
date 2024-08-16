@@ -3,7 +3,6 @@ package jmauriciorlima.com.github.gestao_vendas.entidades;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Objects;
 
 @Entity
@@ -32,7 +31,7 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
-    private Categoria codigoCategoria;
+    private Categoria categoria;
 
     public Long getCodigo() {
         return codigo;
@@ -82,23 +81,29 @@ public class Produto {
         this.observacao = observacao;
     }
 
-    public Categoria getCodigoCategoria() {
-        return codigoCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setCodigoCategoria(Categoria codigoCategoria) {
-        this.codigoCategoria = codigoCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Produto produto)) return false;
-        return Objects.equals(codigo, produto.codigo) && Objects.equals(descricao, produto.descricao) && Objects.equals(quantidade, produto.quantidade) && Objects.equals(precoCusto, produto.precoCusto) && Objects.equals(precoVenda, produto.precoVenda) && Objects.equals(observacao, produto.observacao) && Objects.equals(codigoCategoria, produto.codigoCategoria);
+        return Objects.equals(codigo, produto.codigo)
+                && Objects.equals(descricao, produto.descricao)
+                && Objects.equals(quantidade, produto.quantidade)
+                && Objects.equals(precoCusto, produto.precoCusto)
+                && Objects.equals(precoVenda, produto.precoVenda)
+                && Objects.equals(observacao, produto.observacao)
+                && Objects.equals(categoria, produto.categoria);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigo, descricao, quantidade, precoCusto, precoVenda, observacao, codigoCategoria);
+        return Objects.hash(codigo, descricao, quantidade, precoCusto, precoVenda, observacao, categoria);
     }
 }

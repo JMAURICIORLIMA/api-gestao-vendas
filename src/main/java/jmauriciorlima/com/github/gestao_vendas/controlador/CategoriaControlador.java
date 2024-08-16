@@ -12,10 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/categorias")
 @Tag(name = "Categorias", description = "API de categorias.")
 public class CategoriaControlador {
 
@@ -34,10 +33,10 @@ public class CategoriaControlador {
         return categoriaServico.listarTodas();
     }
 
-    @Operation(summary = "Buscar categoria por código", description = "Busca categoria pelo ID fornecido.")
+    @Operation(summary = "Buscar categoria por código", description = "Busca categoria pelo código fornecido.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de categorias retornadas com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
+            @ApiResponse(responseCode = "200", description = "Categoria encontrada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada ou não existe")
     })
     @GetMapping(value = "/{codigo}")
     public ResponseEntity<Categoria> buscarPorCodigo(@PathVariable Long codigo) {
