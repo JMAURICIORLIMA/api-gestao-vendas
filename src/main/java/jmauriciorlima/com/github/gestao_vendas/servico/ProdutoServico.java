@@ -23,5 +23,8 @@ public class ProdutoServico {
     public Optional<Produto> buscarPorCodigo(Long codigoProduto, Long codigoCategoria) {
         return produtoRepostirotio.buscarPorCodigo(codigoProduto, codigoCategoria);
     }
-    
+
+    public Produto salvar(Produto produto) {
+        return produtoRepostirotio.save(produto);
+    }
 }

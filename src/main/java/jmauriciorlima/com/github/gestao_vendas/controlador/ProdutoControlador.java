@@ -6,11 +6,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Produto;
 import jmauriciorlima.com.github.gestao_vendas.servico.ProdutoServico;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,4 +44,15 @@ public class ProdutoControlador {
         Optional<Produto> produto = produtoServico.buscarPorCodigo(codigoProduto, codigoCategoria);
         return produto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @Operation(summary = "Salvar produto", description = "Salvar novos produtos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Produto salvo com sucesso.")
+    })
+    @PostMapping
+    public ResponseEntity<Produto> salvar(@RequestBody Produto produto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoServico.salvar(produto));
+    }
+
+
 }
