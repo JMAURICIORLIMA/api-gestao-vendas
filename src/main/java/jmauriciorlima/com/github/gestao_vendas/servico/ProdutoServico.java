@@ -4,7 +4,9 @@ import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Produto;
 import jmauriciorlima.com.github.gestao_vendas.excecao.RegraNegocioException;
 import jmauriciorlima.com.github.gestao_vendas.repositorio.ProdutoRepostirotio;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +35,27 @@ public class ProdutoServico {
         return produtoRepostirotio.save(produto);
     }
 
+    public Produto atualizar(Long codigoCategoria, Long codigoProduto, Produto produto) {
+        Produto produtoSalvar = validarCategoriaDoProdutoExiste(codigoProduto, codigoCategoria);
+        validarCategoriaDoProdutoExiste(codigoCategoria);
+        validarProdutoDuplicado(produto);
+        BeanUtils.copyProperties(produto, produtoSalvar, "codigo ");
+        return produtoRepostirotio.save(produtoSalvar);
+    }
+
+    private Produto validarCategoriaDoProdutoExiste(Long codigoProduto, Long codigoCategoria) {
+        Optional<Produto> produto = buscarPorCodigo(codigoProduto, codigoCategoria);
+        if (produto.isEmpty()) {
+            throw new EmptyResultDataAccessException(1);
+        }
+        return produto.get();
+    }
+
     private void validarProdutoDuplicado(Produto produto) {
-        if (produtoRepostirotio.findByCategoriaCodigoAndDescricao(
+        Optional<Produto> produtoPorDescricao = produtoRepostirotio.findByCategoriaCodigoAndDescricao(
                 produto.getCategoria().getCodigo(),
-                produto.getDescricao()).isPresent()) {
+                produto.getDescricao());
+        if (produtoPorDescricao.isPresent() && produtoPorDescricao.get().getCodigo() != produto.getCodigo()) {
             throw new RegraNegocioException(String.format("O produto %s já está cadastrado.", produto.getDescricao()));
         }
     }

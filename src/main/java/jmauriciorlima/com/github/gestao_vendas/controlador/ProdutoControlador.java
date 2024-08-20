@@ -55,5 +55,16 @@ public class ProdutoControlador {
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoServico.salvar(produto));
     }
 
+    @Operation(summary = "Atualizar produto", description = "Atualizar produtos existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso.")
+    })
+    @PutMapping("/{codigoProduto}")
+    public ResponseEntity<Produto> atualizar(@PathVariable Long codigoCategoria,
+                                             @PathVariable Long codigoProduto,
+                                             @Validated  @RequestBody Produto produto) {
+        return ResponseEntity.ok(produtoServico.atualizar(codigoCategoria, codigoProduto, produto));
+    }
+
 
 }
