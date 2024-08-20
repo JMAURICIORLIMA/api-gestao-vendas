@@ -45,7 +45,7 @@ public class CategoriaControlador {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Criar", description = "Cria uma nova categoria")
+    @Operation(summary = "Salvar categoria", description = "Cria uma nova categoria")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
