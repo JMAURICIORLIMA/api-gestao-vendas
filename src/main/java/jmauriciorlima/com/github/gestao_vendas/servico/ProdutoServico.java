@@ -1,6 +1,5 @@
 package jmauriciorlima.com.github.gestao_vendas.servico;
 
-import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Produto;
 import jmauriciorlima.com.github.gestao_vendas.excecao.RegraNegocioException;
 import jmauriciorlima.com.github.gestao_vendas.repositorio.ProdutoRepostirotio;
@@ -29,8 +28,8 @@ public class ProdutoServico {
         return produtoRepostirotio.buscarPorCodigo(codigoProduto, codigoCategoria);
     }
 
-    public Produto salvar(Produto produto) {
-        validarCategoriaDoProdutoExiste(produto.getCategoria().getCodigo());
+    public Produto salvar(Long codigoCategoria, Produto produto) {
+        validarCategoriaDoProdutoExiste(codigoCategoria);
         validarProdutoDuplicado(produto);
         return produtoRepostirotio.save(produto);
     }

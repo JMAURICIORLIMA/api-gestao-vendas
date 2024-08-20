@@ -51,8 +51,10 @@ public class ProdutoControlador {
             @ApiResponse(responseCode = "201", description = "Produto salvo com sucesso.")
     })
     @PostMapping
-    public ResponseEntity<Produto> salvar(@Validated  @RequestBody Produto produto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoServico.salvar(produto));
+    public ResponseEntity<Produto> salvar(@PathVariable Long codigoCategoria,
+                                          @Validated  @RequestBody Produto produto) {
+        Produto salvar = produtoServico.salvar(codigoCategoria, produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvar);
     }
 
     @Operation(summary = "Atualizar produto", description = "Atualizar produtos existente.")
