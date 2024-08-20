@@ -8,6 +8,7 @@ import jmauriciorlima.com.github.gestao_vendas.entidades.Produto;
 import jmauriciorlima.com.github.gestao_vendas.servico.ProdutoServico;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ProdutoControlador {
             @ApiResponse(responseCode = "201", description = "Produto salvo com sucesso.")
     })
     @PostMapping
-    public ResponseEntity<Produto> salvar(@RequestBody Produto produto) {
+    public ResponseEntity<Produto> salvar(@Validated  @RequestBody Produto produto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoServico.salvar(produto));
     }
 

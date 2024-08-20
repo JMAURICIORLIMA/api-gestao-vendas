@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +23,7 @@ import java.util.List;
 public class GestaoVendasTratamentoExcecao extends ResponseEntityExceptionHandler {
 
     public static final String CONSTANT_VALIDATION_NOT_BLANK = "NotBlank";
+    public static final String CONSTANT_VALIDATION_NOT_NULL = "NotNull";
     public static final String CONSTANT_VALIDATION_LENGTH = "Length";
 
     @Override
@@ -70,6 +72,8 @@ public class GestaoVendasTratamentoExcecao extends ResponseEntityExceptionHandle
     private String tratarMensagemDeErroParaUsuario(FieldError fieldError) {
         switch (fieldError.getCode()) {
             case CONSTANT_VALIDATION_NOT_BLANK:
+                return fieldError.getDefaultMessage().concat(" é obrigatório.");
+            case CONSTANT_VALIDATION_NOT_NULL:
                 return fieldError.getDefaultMessage().concat(" é obrigatório.");
             case CONSTANT_VALIDATION_LENGTH:
                 return fieldError.getDefaultMessage().concat(
