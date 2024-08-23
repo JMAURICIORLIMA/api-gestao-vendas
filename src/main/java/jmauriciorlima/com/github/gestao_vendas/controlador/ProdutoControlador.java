@@ -68,5 +68,16 @@ public class ProdutoControlador {
         return ResponseEntity.ok(produtoServico.atualizar(codigoCategoria, codigoProduto, produto));
     }
 
+    @Operation(summary = "Deletar produto", description = "Deletar produto existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Produto deletado com sucesso.")
+    })
+    @DeleteMapping("/{codigoProduto}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long codigoCategoria,
+                        @PathVariable Long codigoProduto) {
+        produtoServico.deletar(codigoCategoria, codigoProduto);
+    }
+
 
 }

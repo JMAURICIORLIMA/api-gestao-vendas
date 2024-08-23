@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import jmauriciorlima.com.github.gestao_vendas.servico.CategoriaServico;
+import jmauriciorlima.com.github.gestao_vendas.visualizacao.CategoriaResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.List;
 @Tag(name = "Categorias", description = "API de categorias.")
 public class CategoriaControlador {
 
-    private CategoriaServico categoriaServico;
+    private final CategoriaServico categoriaServico;
 
     public CategoriaControlador(CategoriaServico categoriaServico) {
         this.categoriaServico = categoriaServico;
@@ -29,7 +30,7 @@ public class CategoriaControlador {
             @ApiResponse(responseCode = "200", description = "Lista de categorias retornadas com sucesso")
     })
     @GetMapping
-    public List<Categoria> listarTodas() {
+    public List<CategoriaResponseDTO> listarTodas() {
         return categoriaServico.listarTodas();
     }
 
@@ -39,7 +40,7 @@ public class CategoriaControlador {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada ou não existe")
     })
     @GetMapping(value = "/{codigo}")
-    public ResponseEntity<Categoria> buscarPorCodigo(@PathVariable Long codigo) {
+    public ResponseEntity<CategoriaResponseDTO> buscarPorCodigo(@PathVariable Long codigo) {
         return categoriaServico.buscarPorCodigo(codigo)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -59,8 +60,8 @@ public class CategoriaControlador {
     @Operation(summary = "Atualizar", description = "Atualiza os dados de uma categoria existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "400", description = "Dados fornecidos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @PutMapping("/{codigo}")
     public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
@@ -70,8 +71,8 @@ public class CategoriaControlador {
     @Operation(summary = "Excluir", description = "Excluir categoria por código.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Operação realizada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "400", description = "Dados fornecidos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @DeleteMapping("/{codigo}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

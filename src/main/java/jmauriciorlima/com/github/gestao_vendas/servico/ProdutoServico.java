@@ -42,6 +42,10 @@ public class ProdutoServico {
         return produtoRepostirotio.save(produtoSalvar);
     }
 
+    public void deletar(Long codigoCategoria, Long codigoProduto) {
+        Produto produto = validarCategoriaDoProdutoExiste(codigoProduto, codigoCategoria);
+        produtoRepostirotio.delete(produto);
+    }
     private Produto validarCategoriaDoProdutoExiste(Long codigoProduto, Long codigoCategoria) {
         Optional<Produto> produto = buscarPorCodigo(codigoProduto, codigoCategoria);
         if (produto.isEmpty()) {
