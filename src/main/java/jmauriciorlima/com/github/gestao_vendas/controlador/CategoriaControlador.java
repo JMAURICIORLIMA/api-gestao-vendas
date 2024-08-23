@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import jmauriciorlima.com.github.gestao_vendas.servico.CategoriaServico;
+import jmauriciorlima.com.github.gestao_vendas.visualizacao.CategoriaRequestDTO;
 import jmauriciorlima.com.github.gestao_vendas.visualizacao.CategoriaResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,9 +53,9 @@ public class CategoriaControlador {
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
     })
     @PostMapping
-    public ResponseEntity<Categoria> salvar(@Valid @RequestBody Categoria categoria) {
-        Categoria categoriaSalva = categoriaServico.salvar(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
+    public ResponseEntity<CategoriaResponseDTO> salvar(@Valid @RequestBody CategoriaRequestDTO categoriaDTO) {
+        Categoria categoriaSalva = categoriaServico.salvar(categoriaDTO.converterParaEntidade());
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoriaResponseDTO.converterParaCategoriaDTO(categoriaSalva));
     }
 
     @Operation(summary = "Atualizar", description = "Atualiza os dados de uma categoria existente.")
@@ -64,8 +65,8 @@ public class CategoriaControlador {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @PutMapping("/{codigo}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria) {
-        return ResponseEntity.ok(categoriaServico.atualizar(codigo, categoria));
+    public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody CategoriaRequestDTO categoriaDTO) {
+        return ResponseEntity.ok(categoriaServico.atualizar(codigo, categoriaDTO.converterParaEntidade(codigo)));
     }
 
     @Operation(summary = "Excluir", description = "Excluir categoria por código.")
