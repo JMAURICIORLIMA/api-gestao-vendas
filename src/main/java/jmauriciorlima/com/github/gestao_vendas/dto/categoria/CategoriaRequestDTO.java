@@ -1,5 +1,6 @@
-package jmauriciorlima.com.github.gestao_vendas.visualizacao;
+package jmauriciorlima.com.github.gestao_vendas.dto.categoria;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import org.hibernate.validator.constraints.Length;
@@ -8,6 +9,7 @@ public class CategoriaRequestDTO {
 
     @NotBlank(message = "Nome")
     @Length(min = 3, max = 50, message = "Nome")
+    @Schema(name = "nome", description = "Nome")
     private String nome;
 
     public Categoria converterParaEntidade() {

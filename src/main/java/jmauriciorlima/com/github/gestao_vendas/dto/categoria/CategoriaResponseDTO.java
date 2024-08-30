@@ -1,14 +1,14 @@
-package jmauriciorlima.com.github.gestao_vendas.visualizacao;
+package jmauriciorlima.com.github.gestao_vendas.dto.categoria;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 
 public class CategoriaResponseDTO {
 
-    @Schema(description = "Código")
+    @Schema(name = "codigo", description = "Código")
     private Long codigo;
 
-    @Schema(description = "Nome")
+    @Schema(name = "nome", description = "Nome")
     private String nome;
 
     public CategoriaResponseDTO(Long codigo, String nome) {

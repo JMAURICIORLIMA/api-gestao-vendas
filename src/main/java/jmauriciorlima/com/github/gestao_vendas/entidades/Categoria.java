@@ -1,9 +1,8 @@
 package jmauriciorlima.com.github.gestao_vendas.entidades;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
@@ -14,12 +13,18 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
+    @Schema(name = "codigo", description = "Código")
     private Long codigo;
 
     @Column(name = "nome")
+    @Schema(name = "nome", description = "Nome")
     private String nome;
 
     public Categoria() {
+    }
+
+    public Categoria(Long codigo) {
+        this.codigo = codigo;
     }
 
     public Categoria(String nome) {

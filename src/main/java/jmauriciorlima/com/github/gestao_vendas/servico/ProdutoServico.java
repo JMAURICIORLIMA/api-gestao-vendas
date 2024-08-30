@@ -4,7 +4,6 @@ import jmauriciorlima.com.github.gestao_vendas.entidades.Produto;
 import jmauriciorlima.com.github.gestao_vendas.excecao.RegraNegocioException;
 import jmauriciorlima.com.github.gestao_vendas.repositorio.ProdutoRepostirotio;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,14 @@ import java.util.Optional;
 @Service
 public class ProdutoServico {
 
-    @Autowired
-    private CategoriaServico categoriaServico;
+    private final CategoriaServico categoriaServico;
 
-    @Autowired
-    private ProdutoRepostirotio produtoRepostirotio;
+    private final ProdutoRepostirotio produtoRepostirotio;
+
+    public ProdutoServico(CategoriaServico categoriaServico, ProdutoRepostirotio produtoRepostirotio) {
+        this.categoriaServico = categoriaServico;
+        this.produtoRepostirotio = produtoRepostirotio;
+    }
 
     public List<Produto> listarTodosPorCategoria(Long condigoCategoria) {
         return produtoRepostirotio.findByCategoriaCodigo(condigoCategoria);
@@ -46,6 +48,7 @@ public class ProdutoServico {
         Produto produto = validarCategoriaDoProdutoExiste(codigoProduto, codigoCategoria);
         produtoRepostirotio.delete(produto);
     }
+
     private Produto validarCategoriaDoProdutoExiste(Long codigoProduto, Long codigoCategoria) {
         Optional<Produto> produto = buscarPorCodigo(codigoProduto, codigoCategoria);
         if (produto.isEmpty()) {
@@ -68,7 +71,7 @@ public class ProdutoServico {
             throw new RegraNegocioException("A categoria não pode ser nula");
         }
         if (categoriaServico.buscarPorCodigo(codigoCategoria).isEmpty()) {
-            throw  new RegraNegocioException(
+            throw new RegraNegocioException(
                     String.format("A categoria de código %s informada não existe no cadastro", codigoCategoria));
         }
 

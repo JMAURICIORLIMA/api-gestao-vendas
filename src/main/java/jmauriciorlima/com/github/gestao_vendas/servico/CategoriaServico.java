@@ -3,7 +3,7 @@ package jmauriciorlima.com.github.gestao_vendas.servico;
 import jmauriciorlima.com.github.gestao_vendas.entidades.Categoria;
 import jmauriciorlima.com.github.gestao_vendas.excecao.RegraNegocioException;
 import jmauriciorlima.com.github.gestao_vendas.repositorio.CategoriaRepositorio;
-import jmauriciorlima.com.github.gestao_vendas.visualizacao.CategoriaResponseDTO;
+import jmauriciorlima.com.github.gestao_vendas.dto.categoria.CategoriaResponseDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
