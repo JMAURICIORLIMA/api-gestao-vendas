@@ -65,8 +65,9 @@ public class CategoriaControlador {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     @PutMapping("/{codigo}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody CategoriaRequestDTO categoriaDTO) {
-        return ResponseEntity.ok(categoriaServico.atualizar(codigo, categoriaDTO.converterParaEntidade(codigo)));
+    public ResponseEntity<CategoriaResponseDTO> atualizar(@PathVariable Long codigo, @Valid @RequestBody CategoriaRequestDTO categoriaDTO) {
+        Categoria categoriaAtualizada = categoriaServico.atualizar(codigo, categoriaDTO.converterParaEntidade(codigo));
+        return ResponseEntity.ok(CategoriaResponseDTO.converterParaCategoriaDTO(categoriaAtualizada));
     }
 
     @Operation(summary = "Excluir", description = "Excluir categoria por código.")
